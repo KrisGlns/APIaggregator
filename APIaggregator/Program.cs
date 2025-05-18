@@ -16,13 +16,15 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMemoryCache();
+
 builder.Services.AddHttpClient<IWeatherService, WeatherService>();
 builder.Services.AddHttpClient<INewsService, NewsService>(client =>
 {
     client.DefaultRequestHeaders.Add("User-Agent", "MyAppAggregator/1.0");
 }).AddTransientHttpErrorPolicy(p => p.RetryAsync(3)); ;
-builder.Services.AddHttpClient<ISpotifyService, SpotifyService>();
 builder.Services.AddHttpClient<IGithubService, GithubService>();
+builder.Services.AddHttpClient<ISpotifyService, SpotifyService>();
 
 var app = builder.Build();
 

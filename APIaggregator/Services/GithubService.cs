@@ -1,6 +1,7 @@
 ﻿using APIaggregator.Contracts;
 using APIaggregator.Models;
 using APIaggregator.Models.GitHub;
+using Microsoft.Extensions.Caching.Memory;
 using System.Net;
 using System.Net.Http.Headers;
 
@@ -9,14 +10,32 @@ namespace APIaggregator.Services
     public class GithubService: IGithubService
     {
         private readonly HttpClient _httpClient;
+        private readonly IMemoryCache _cache;
 
-        public GithubService(HttpClient httpClient)
+        public GithubService(HttpClient httpClient, IMemoryCache cache)
         {
             _httpClient = httpClient;
+            _cache = cache;
             _httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MyAppAggregator", "1.0"));
         }
 
         public async Task<GithubResult> GetReposForUserAsync(string username)
+        {
+            var cacheKey = $"github::{username.ToLower()}";
+
+            if (_cache.TryGetValue(cacheKey, out GithubResult cached))
+            {
+                return cached;
+            }
+
+            var result = await FetchGithubReposFromApiAsync(username);
+
+            _cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+
+            return result;
+        }
+
+        private async Task<GithubResult> FetchGithubReposFromApiAsync(string username)
         {
             var url = $"https://api.github.com/users/{username}/repos";
 
@@ -60,7 +79,6 @@ namespace APIaggregator.Services
                     ErrorMessage = $"Error fetching GitHub repositories: {ex.Message}"
                 };
             }
-
         }
     }
 }

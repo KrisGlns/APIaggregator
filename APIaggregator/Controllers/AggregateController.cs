@@ -4,8 +4,6 @@ using APIaggregator.Models.AboutNews;
 using APIaggregator.Models.AboutWeather;
 using APIaggregator.Models.GitHub;
 using APIaggregator.Models.Weather;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;

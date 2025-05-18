@@ -2,6 +2,7 @@
 using APIaggregator.Models;
 using APIaggregator.Models.AboutWeather;
 using APIaggregator.Models.Weather;
+using Microsoft.Extensions.Caching.Memory;
 using System.Text.Json;
 
 namespace APIaggregator.Services
@@ -10,14 +11,29 @@ namespace APIaggregator.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _config;
+        private readonly IMemoryCache _cache;
 
-        public WeatherService(HttpClient httpClient, IConfiguration config)
+        public WeatherService(HttpClient httpClient, IConfiguration config, IMemoryCache cache)
         {
             _httpClient = httpClient;
             _config = config;
+            _cache = cache;
         }
 
         public async Task<WeatherResult> GetWeatherForCityAsync(string cityName, TemperatureUnit unit)
+        {
+            var cacheKey = $"weather::{cityName.ToLower()}::{unit}";
+            if (_cache.TryGetValue(cacheKey, out WeatherResult cached))
+            {
+                return cached;
+            }
+
+            var result = await FetchWeatherFromApiAsync(cityName, unit);
+            _cache.Set(cacheKey, result, TimeSpan.FromMinutes(5)); // Cache for 5 minutes
+            return result;
+        }
+
+        private async Task<WeatherResult> FetchWeatherFromApiAsync(string cityName, TemperatureUnit unit)
         {
             var apiKey = _config["ApiKeys:OpenWeather"];
 
