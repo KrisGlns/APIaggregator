@@ -77,8 +77,22 @@ public async Task<IActionResult> GetGithubRepos([FromQuery] string username)
     return Ok(response);
 }
 
+The response you're seeing:
+
+json
+Copy
+Edit
+{
+  "title": "One or more validation errors occurred.",
+  "errors": {
+    "city": ["The city field is required."]
+  }
+}
+...is not from your code, but from ASP.NET Core’s model validation system. It occurs before your controller action is even invoked, because the city parameter is marked as non-nullable (string) and required by default.
+When city is null, the model binding fails → ASP.NET Core short-circuits and does not execute your controller. That’s why news and github don’t run — it's not your code’s fault; it's the framework doing strict validation.
+
 // TO-DO
 {
-    1) Set filter for units in wehater api to set it dynamically 
+    1) Set filter for units in weather api to set it dynamically 
     2) Create a general DTO for the response type since all are the same 
 }

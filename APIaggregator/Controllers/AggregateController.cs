@@ -3,6 +3,7 @@ using APIaggregator.Models;
 using APIaggregator.Models.AboutNews;
 using APIaggregator.Models.AboutWeather;
 using APIaggregator.Models.GitHub;
+using APIaggregator.Models.Weather;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -30,13 +31,15 @@ namespace APIaggregator.Controllers
         }
 
         [HttpGet("weather")]
-        public async Task<IActionResult> GetWeather([FromQuery] string city)
+        public async Task<IActionResult> GetWeather(
+            [FromQuery] string city, 
+            [FromQuery] TemperatureUnit unit = TemperatureUnit.Metric)
         {
             var response = new ApiSection<WeatherInfo?>();
 
             try
             {
-                var result = await _weatherService.GetWeatherForCityAsync(city);
+                var result = await _weatherService.GetWeatherForCityAsync(city, unit);
                 response.Data = result.Info;
                 response.Status = result.Status;
 
@@ -119,13 +122,14 @@ namespace APIaggregator.Controllers
 
         [HttpGet("aggregate")]
         public async Task<IActionResult> GetAggregatedData(
-            [FromQuery, DefaultValue("Athens")] string city, 
+            [FromQuery, DefaultValue("Athens")] string city,
             [FromQuery, DefaultValue("Agile Actors")] string topic, 
             [FromQuery, DefaultValue("KrisGlns")] string githubUsername,
             [FromQuery] string? sortNews = null,
-            [FromQuery, Range(1, 100)] int? newsLimit = null)
+            [FromQuery, Range(1, 100)] int? newsLimit = null,
+            [FromQuery] TemperatureUnit unit = TemperatureUnit.Metric)
         {
-            var weatherTask = _weatherService.GetWeatherForCityAsync(city);
+            var weatherTask = _weatherService.GetWeatherForCityAsync(city, unit);
             var newsTask = _newsService.GetEverythingAsync(topic, newsLimit);
             var githubTask = _githubService.GetReposForUserAsync(githubUsername);
 

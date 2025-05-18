@@ -5,6 +5,6 @@ namespace APIaggregator.Contracts
 {
     public interface IWeatherService
     {
-        Task<WeatherResult> GetWeatherForCityAsync(string city);
+        Task<WeatherResult> GetWeatherForCityAsync(string city, TemperatureUnit unit);
     }
 }

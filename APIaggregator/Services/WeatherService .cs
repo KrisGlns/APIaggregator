@@ -17,7 +17,7 @@ namespace APIaggregator.Services
             _config = config;
         }
 
-        public async Task<WeatherResult> GetWeatherForCityAsync(string cityName)
+        public async Task<WeatherResult> GetWeatherForCityAsync(string cityName, TemperatureUnit unit)
         {
             var apiKey = _config["ApiKeys:OpenWeather"];
 
@@ -38,17 +38,11 @@ namespace APIaggregator.Services
                         ErrorMessage = $"Geolocation API call failed: {geoResponse.StatusCode}, Body: {error}"
                     };
                 }
-                //if (!geoResponse.IsSuccessStatusCode)
-                //{
-                //    var error = await geoResponse.Content.ReadAsStringAsync();
-                //    throw new HttpRequestException($"Geolocation API call failed: {geoResponse.StatusCode}, Body: {error}");
-                //}
 
                 var locations = await geoResponse.Content.ReadFromJsonAsync<List<GeoLocation>>();
                 var location = locations?.FirstOrDefault();
                 if (location == null)
                 {
-                    //throw new InvalidOperationException("No location found for the given city.");
                     return new WeatherResult
                     {
                         Status = ApiStatus.Warning,
@@ -57,15 +51,14 @@ namespace APIaggregator.Services
                 }
 
                 // 2. Get actual weather data using lat/lon
-                var weatherUrl = $"https://api.openweathermap.org/data/2.5/weather?lat={location.Lat}&lon={location.Lon}&appid={apiKey}&units=metric";
+                var unitString = unit.ToString().ToLower();
+                var weatherUrl = $"https://api.openweathermap.org/data/2.5/weather?lat={location.Lat}&lon={location.Lon}&appid={apiKey}&units={unitString}";
                 var weatherRequest = new HttpRequestMessage(HttpMethod.Get, weatherUrl);
                 weatherRequest.Headers.Add("User-Agent", "MyAppAggregator/1.0");
 
                 var weatherResponse = await _httpClient.SendAsync(weatherRequest);
                 if (!weatherResponse.IsSuccessStatusCode)
                 {
-                    //var error = await weatherResponse.Content.ReadAsStringAsync();
-                    //throw new HttpRequestException($"Weather API call failed: {weatherResponse.StatusCode}, Body: {error}");
                     var error = await weatherResponse.Content.ReadAsStringAsync();
                     return new WeatherResult
                     {
@@ -90,7 +83,8 @@ namespace APIaggregator.Services
                     {
                         City = location.Name,
                         Description = response.Weather.FirstOrDefault()?.Description ?? "No description",
-                        TemperatureCelsius = response.Main.Temp
+                        TemperatureCelsius = response.Main.Temp,
+                        Unit = unit.ToString().ToLower()
                     }
                 };
             }
