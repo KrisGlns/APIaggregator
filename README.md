@@ -144,3 +144,7 @@ Logging outputs
  * Console (during development)
  * Daily rolling log files in the '/Logs/' directory
 
+-- Cloning the Project from Git Bundle --
+If you are receiving this project as a .bundle, you can clone it locally using:
+ * git clone Christos_Galanis_API_Aggregator.bundle APIaggregator
+After cloning navigate to the poject folder: cd APIaggregator
