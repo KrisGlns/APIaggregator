@@ -2,6 +2,7 @@
 using APIaggregator.Models;
 using APIaggregator.Models.AboutNews;
 using APIaggregator.Models.GitHub;
+using APIaggregator.Models.News;
 using APIaggregator.Models.Weather;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -129,54 +130,12 @@ namespace APIaggregator.Controllers
 
             await Task.WhenAll(weatherTask, newsTask, githubTask);
 
-            var weatherResult = new ApiSection<WeatherInfo?>();
-            var newsResult = new ApiSection<List<NewsArticle>>() { Data = new List<NewsArticle>() };
-            var githubResult = new ApiSection<List<GithubRepo>>() { Data = new List<GithubRepo>() };
-
-            if (weatherTask.IsCompletedSuccessfully)
-            {
-                var weatherData = weatherTask.Result;
-                weatherResult.Data = weatherData.Info;
-                weatherResult.Status = weatherData.Status;
-                weatherResult.ErrorMessage = weatherData.ErrorMessage;
-            }
-            else
-            {
-                weatherResult.Status = ApiStatus.Error;
-                weatherResult.ErrorMessage = weatherTask.Exception?.InnerException?.Message ?? "Unknown error";
-            }
-
-            if (newsTask.IsCompletedSuccessfully)
-            {
-                var newsResultData = newsTask.Result;
-                newsResult.Data = !string.IsNullOrEmpty(sortNews) 
-                    ? SortNews(newsResultData.Articles, sortNews) 
-                    : newsResultData.Articles;
-
-                if (!string.IsNullOrWhiteSpace(newsResultData.ErrorMessage))
-                {
-                    newsResult.ErrorMessage = newsResultData.ErrorMessage;
-                }
-            }
-            else
-            {
-                newsResult.Status = ApiStatus.Error;
-                newsResult.ErrorMessage = newsTask.Exception?.InnerException?.Message ?? "Unknown error";
-            }
-
-            if (githubTask.IsCompletedSuccessfully)
-            {
-                var githubData = githubTask.Result;
-                githubResult.Data = githubData.Repositories;
-                githubResult.Status = githubData.Status;
-                githubResult.ErrorMessage = githubData.ErrorMessage;
-            }
-            else
-            {
-                githubResult.Status = ApiStatus.Error;
-                githubResult.ErrorMessage = githubTask.Exception?.InnerException?.Message ?? "Unknown error";
-            }
-
+            var weatherResult = HandleWeatherResult(weatherTask);
+            
+            var newsResult = HandleNewsResult(newsTask, sortNews);
+            
+            var githubResult = HandleGithubResult(githubTask);
+            
             var result = new AggregatedResponse
             {
                 Weather = weatherResult,
@@ -185,6 +144,71 @@ namespace APIaggregator.Controllers
             };
 
             return Ok(result);
+        }
+
+        private ApiSection<List<GithubRepo>> HandleGithubResult(Task<GithubResult> githubTask)
+        {
+            var result = new ApiSection<List<GithubRepo>>() { Data = new List<GithubRepo>() };
+
+            if (githubTask.IsCompletedSuccessfully)
+            {
+                var githubData = githubTask.Result;
+                result.Data = githubData.Repositories;
+                result.Status = githubData.Status;
+                result.ErrorMessage = githubData.ErrorMessage;
+            }
+            else
+            {
+                result.Status = ApiStatus.Error;
+                result.ErrorMessage = githubTask.Exception?.InnerException?.Message ?? "Unknown error";
+            }
+
+            return result;
+        }
+
+        private ApiSection<List<NewsArticle>> HandleNewsResult(Task<NewsResult> newsTask, string? sortNews)
+        {
+            var result = new ApiSection<List<NewsArticle>>() { Data = new List<NewsArticle>() };
+
+            if (newsTask.IsCompletedSuccessfully)
+            {
+                var newsResultData = newsTask.Result;
+                result.Data = !string.IsNullOrEmpty(sortNews)
+                    ? SortNews(newsResultData.Articles, sortNews)
+                    : newsResultData.Articles;
+
+                if (!string.IsNullOrWhiteSpace(newsResultData.ErrorMessage))
+                {
+                    result.ErrorMessage = newsResultData.ErrorMessage;
+                }
+            }
+            else
+            {
+                result.Status = ApiStatus.Error;
+                result.ErrorMessage = newsTask.Exception?.InnerException?.Message ?? "Unknown error";
+            }
+
+            return result;
+        }
+
+        private ApiSection<WeatherInfo?> HandleWeatherResult(Task<WeatherResult> weatherTask)
+        {
+            var result = new ApiSection<WeatherInfo?>();
+
+            if (weatherTask.IsCompletedSuccessfully)
+            {
+                var weatherData = weatherTask.Result;
+                result.Data = weatherData.Info;
+                result.Status = weatherData.Status;
+                result.ErrorMessage = weatherData.ErrorMessage;
+            }
+            else
+            {
+                result.Status = ApiStatus.Error;
+                result.ErrorMessage = weatherTask.Exception?.InnerException?.Message ?? "Unknown error";
+            }
+
+            return result;
         }
 
         private List<NewsArticle> SortNews(List<NewsArticle> newsResult, string? sort)

@@ -1,9 +1,8 @@
-// https://en.ittrip.xyz/c-sharp/aggregator-microservice-pattern-csharp#index_id1
-
 using APIaggregator.Contracts;
 using APIaggregator.Services;
 using Polly;
 using System.Text.Json.Serialization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +26,7 @@ builder.Services.AddHttpClient<IWeatherService, WeatherService>();
 builder.Services.AddHttpClient<INewsService, NewsService>(client =>
 {
     client.DefaultRequestHeaders.Add("User-Agent", "MyAppAggregator/1.0");
-}).AddTransientHttpErrorPolicy(p => p.RetryAsync(3)); ;
+}).AddTransientHttpErrorPolicy(p => p.RetryAsync(3));
 builder.Services.AddHttpClient<IGithubService, GithubService>();
 
 var app = builder.Build();
