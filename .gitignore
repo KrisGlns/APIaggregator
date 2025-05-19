@@ -482,3 +482,12 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Ignore user secrets (dotnet user-secrets)
+**/secrets.json
+
+# Ignore sensitive configuration
+appsettings.Development.json
+
+# Ignore local text file
+TextFile.txt

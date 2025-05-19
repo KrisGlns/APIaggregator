@@ -16,15 +16,12 @@ namespace APIaggregator.Controllers
     {
         private readonly IWeatherService _weatherService;
         private readonly INewsService _newsService;
-        private readonly ISpotifyService _spotifyService;
         private readonly IGithubService _githubService;
 
-        public AggregateController(IWeatherService weather, INewsService news, ISpotifyService spotifyService, IGithubService githubService)
+        public AggregateController(IWeatherService weather, INewsService news, IGithubService githubService)
         {
             _weatherService = weather;
-            //_twitterService = twitter;
             _newsService = news;
-            _spotifyService = spotifyService;
             _githubService = githubService;
         }
 
@@ -121,7 +118,7 @@ namespace APIaggregator.Controllers
         [HttpGet("aggregate")]
         public async Task<IActionResult> GetAggregatedData(
             [FromQuery, DefaultValue("Athens")] string city,
-            [FromQuery, DefaultValue("Agile Actors")] string topic, 
+            [FromQuery, DefaultValue(".NET Core")] string topic, 
             [FromQuery, DefaultValue("KrisGlns")] string githubUsername,
             [FromQuery] string? sortNews = null,
             [FromQuery, Range(1, 100)] int? newsLimit = null,

@@ -99,7 +99,7 @@ namespace APIaggregator.Services
                     {
                         City = location.Name,
                         Description = response.Weather.FirstOrDefault()?.Description ?? "No description",
-                        TemperatureCelsius = response.Main.Temp,
+                        Temperature = response.Main.Temp,
                         Unit = unit.ToString().ToLower()
                     }
                 };

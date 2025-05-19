@@ -21,33 +21,6 @@ namespace APIaggregator.Services
             _cache = cache;
         }
 
-        //public async Task<List<NewsArticle>> GetTopHeadLinesForSpecificCountryAsync(string country, int? limit = null)
-        //{
-        //    var apiKey = _config["ApiKeys:NewsApi"];
-
-        //    // country: The 2-letter ISO 3166-1 code of the country you want to get headlines for.
-        //    // Possible options: ae, ar, at, au, be, bg, br, ca, ch, cn, ...
-        //    var url = $"https://newsapi.org/v2/top-headlines?country={country}&apiKey={apiKey}";
-
-        //    var httpResponse = await _httpClient.GetAsync(url);
-        //    if (!httpResponse.IsSuccessStatusCode)
-        //    {
-        //        var error = await httpResponse.Content.ReadAsStringAsync();
-        //        throw new HttpRequestException($"News API call failed: {httpResponse.StatusCode}, Body: {error}");
-        //    }
-        //    var news = await httpResponse.Content.ReadFromJsonAsync<NewsResponse>();
-        //    return news.Articles ?? new List<NewsArticle>();
-
-        //    //var response = await _httpClient.GetFromJsonAsync<JsonElement>(url);
-        //    //return response.GetProperty("articles").EnumerateArray().Select(article => new NewsArticle
-        //    //{
-        //    //    Title = article.GetProperty("title").GetString(),
-        //    //    Url = article.GetProperty("url").GetString(),
-        //    //    Source = article.GetProperty("source").GetProperty("id").GetString(),
-        //    //    PublishedAt = DateTime.Parse(article.GetProperty("publishedAt").GetString())
-        //    //}).ToList();
-        //}
-
         public async Task<NewsResult> GetEverythingAsync(string topic, int? limit = null)
         {
             var cacheKey = $"news::{topic.ToLower()}::{limit}";
@@ -67,6 +40,7 @@ namespace APIaggregator.Services
         private async Task<NewsResult> FetchNewsFromApiAsync(string topic, int? limit)
         {
             var apiKey = _config["ApiKeys:NewsApi"];
+
             // apiKey: The API key i was granted after registering for a developer account.
             // q: Keywords or phrases to search for in the article title and body.
             //    The complete value for q must be URL-encoded. Max length: 500 chars.

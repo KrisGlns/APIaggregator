@@ -9,6 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
+
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); // To force enums to be shown as strings and not as numbers
@@ -24,7 +29,6 @@ builder.Services.AddHttpClient<INewsService, NewsService>(client =>
     client.DefaultRequestHeaders.Add("User-Agent", "MyAppAggregator/1.0");
 }).AddTransientHttpErrorPolicy(p => p.RetryAsync(3)); ;
 builder.Services.AddHttpClient<IGithubService, GithubService>();
-builder.Services.AddHttpClient<ISpotifyService, SpotifyService>();
 
 var app = builder.Build();
 

@@ -10,13 +10,24 @@ namespace APIaggregator.Services
     public class GithubService: IGithubService
     {
         private readonly HttpClient _httpClient;
+        private readonly IConfiguration _config;
         private readonly IMemoryCache _cache;
+        private readonly string _token;
 
-        public GithubService(HttpClient httpClient, IMemoryCache cache)
+        public GithubService(HttpClient httpClient, IMemoryCache cache, IConfiguration config)
         {
             _httpClient = httpClient;
             _cache = cache;
-            _httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MyAppAggregator", "1.0"));
+            _config = config;
+            _token = _config["ApiKeys:GitHub"];
+            _httpClient.DefaultRequestHeaders.UserAgent
+                .Add(new ProductInfoHeaderValue("MyAppAggregator", "1.0"));
+
+            if (!string.IsNullOrEmpty(_token))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            }
+            
         }
 
         public async Task<GithubResult> GetReposForUserAsync(string username)
