@@ -2,7 +2,6 @@
 using APIaggregator.Models;
 using APIaggregator.Models.Weather;
 using Microsoft.Extensions.Caching.Memory;
-using System.Text.Json;
 
 namespace APIaggregator.Services
 {

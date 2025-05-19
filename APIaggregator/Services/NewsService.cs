@@ -3,8 +3,6 @@ using APIaggregator.Models;
 using APIaggregator.Models.AboutNews;
 using APIaggregator.Models.News;
 using Microsoft.Extensions.Caching.Memory;
-using System.Text.Json;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace APIaggregator.Services
 {
