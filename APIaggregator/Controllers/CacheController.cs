@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using APIaggregator.Models.Cache;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace APIaggregator.Controllers
@@ -20,7 +21,7 @@ namespace APIaggregator.Controllers
             if (_cache is MemoryCache memoryCache)
             {
                 memoryCache.Compact(1.0); // Removes all entries
-                return Ok(new { message = "In-memory cache cleared." });
+                return Ok(new CacheClearResponse { Message = "In-memory cache cleared." });
             }
 
             return StatusCode(500, "Cache clearing not supported.");

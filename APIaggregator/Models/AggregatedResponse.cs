@@ -1,5 +1,5 @@
 ﻿using APIaggregator.Models.AboutNews;
-using APIaggregator.Models.AboutWeather;
+using APIaggregator.Models.Weather;
 using APIaggregator.Models.GitHub;
 
 namespace APIaggregator.Models

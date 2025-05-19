@@ -1,0 +1,232 @@
+{
+  "name": "API Aggregator",
+  "version": "1",
+  "items": [
+    {
+      "type": "http",
+      "name": "Aggregated Endpoint",
+      "filename": "Aggregated Endpoint.bru",
+      "seq": 2,
+      "request": {
+        "url": "http://localhost:5185/api/aggregate?city=Athens&topic=dotnet&githubUsername=KrisGlns&sortNews=date&newsLimit=2",
+        "method": "GET",
+        "headers": [],
+        "params": [
+          {
+            "name": "city",
+            "value": "Athens",
+            "type": "query",
+            "enabled": true
+          },
+          {
+            "name": "topic",
+            "value": "dotnet",
+            "type": "query",
+            "enabled": true
+          },
+          {
+            "name": "githubUsername",
+            "value": "KrisGlns",
+            "type": "query",
+            "enabled": true
+          },
+          {
+            "name": "sortNews",
+            "value": "date",
+            "type": "query",
+            "enabled": true
+          },
+          {
+            "name": "newsLimit",
+            "value": "2",
+            "type": "query",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "Clear cache",
+      "filename": "Clear cache.bru",
+      "seq": 3,
+      "request": {
+        "url": "http://localhost:5000/api/cache/clear",
+        "method": "POST",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "Get Weather By City and Unit",
+      "filename": "Get Weather By City and Unit.bru",
+      "seq": 4,
+      "request": {
+        "url": "http://localhost:5185/api/aggregate/weather?city=Athens&unit=metric",
+        "method": "GET",
+        "headers": [],
+        "params": [
+          {
+            "name": "city",
+            "value": "Athens",
+            "type": "query",
+            "enabled": true
+          },
+          {
+            "name": "unit",
+            "value": "metric",
+            "type": "query",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "Get News by Topic, with Sorting and Limit",
+      "filename": "Get News by Topic, with Sorting and Limit.bru",
+      "seq": 5,
+      "request": {
+        "url": "http://localhost:5185/api/aggregate/news?topic=dotnet&sort=date&limit=3",
+        "method": "GET",
+        "headers": [],
+        "params": [
+          {
+            "name": "topic",
+            "value": "dotnet",
+            "type": "query",
+            "enabled": true
+          },
+          {
+            "name": "sort",
+            "value": "date",
+            "type": "query",
+            "enabled": true
+          },
+          {
+            "name": "limit",
+            "value": "3",
+            "type": "query",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "Get GitHub Repositories for a User",
+      "filename": "Get GitHub Repositories for a User.bru",
+      "seq": 6,
+      "request": {
+        "url": "http://localhost:5185/api/aggregate/github?username=KrisGlns",
+        "method": "GET",
+        "headers": [],
+        "params": [
+          {
+            "name": "username",
+            "value": "KrisGlns",
+            "type": "query",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    }
+  ],
+  "activeEnvironmentUid": "v0BCoRzMPA51Zx8yr1KGJ",
+  "environments": [
+    {
+      "variables": [
+        {
+          "name": "baseUrl",
+          "value": "http://localhost:5185",
+          "enabled": true,
+          "secret": false,
+          "type": "text"
+        }
+      ],
+      "name": "local"
+    }
+  ],
+  "brunoConfig": {
+    "version": "1",
+    "name": "API Aggregator",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ],
+    "size": 0,
+    "filesCount": 0
+  }
+}

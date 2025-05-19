@@ -11,7 +11,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace APIaggregatorTests
+namespace APIaggregatorTests.ServicesTests
 {
     public class NewsServiceTests
     {
@@ -26,7 +26,7 @@ namespace APIaggregatorTests
             var config = new ConfigurationBuilder()
                 .AddInMemoryCollection(new Dictionary<string, string>
                 {
-                { "NewsApi:ApiKey", "test-api-key" }
+                { "ApiKeys:NewsApi", "test-api-key" }
                 })
                 .Build();
 
@@ -94,7 +94,6 @@ namespace APIaggregatorTests
 
             // Assert
             result.Status.Should().Be(ApiStatus.Success);
-            //result.ErrorMessage.Should().Contain("exceeds", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

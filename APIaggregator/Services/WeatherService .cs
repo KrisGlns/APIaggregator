@@ -1,6 +1,5 @@
 ﻿using APIaggregator.Contracts;
 using APIaggregator.Models;
-using APIaggregator.Models.AboutWeather;
 using APIaggregator.Models.Weather;
 using Microsoft.Extensions.Caching.Memory;
 using System.Text.Json;
@@ -61,7 +60,7 @@ namespace APIaggregator.Services
                 {
                     return new WeatherResult
                     {
-                        Status = ApiStatus.Warning,
+                        Status = ApiStatus.Error,
                         ErrorMessage = $"No location found for the city: {cityName}"
                     };
                 }

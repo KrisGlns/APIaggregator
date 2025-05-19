@@ -1,7 +1,6 @@
 ﻿using APIaggregator.Contracts;
 using APIaggregator.Models;
 using APIaggregator.Models.AboutNews;
-using APIaggregator.Models.AboutWeather;
 using APIaggregator.Models.GitHub;
 using APIaggregator.Models.Weather;
 using Microsoft.AspNetCore.Mvc;
@@ -115,11 +114,11 @@ namespace APIaggregator.Controllers
             return Ok(response);
         }
 
-        [HttpGet("aggregate")]
+        [HttpGet]
         public async Task<IActionResult> GetAggregatedData(
-            [FromQuery, DefaultValue("Athens")] string city,
-            [FromQuery, DefaultValue(".NET Core")] string topic, 
-            [FromQuery, DefaultValue("KrisGlns")] string githubUsername,
+            [FromQuery, DefaultValue("Athens")] string? city,
+            [FromQuery, DefaultValue(".NET Core")] string? topic, 
+            [FromQuery, DefaultValue("KrisGlns")] string? githubUsername,
             [FromQuery] string? sortNews = null,
             [FromQuery, Range(1, 100)] int? newsLimit = null,
             [FromQuery] TemperatureUnit unit = TemperatureUnit.Metric)

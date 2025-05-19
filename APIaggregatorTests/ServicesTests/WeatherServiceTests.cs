@@ -4,14 +4,10 @@ using APIaggregator.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using RichardSzalay.MockHttp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NSubstitute;
 using FluentAssertions;
 
-namespace APIaggregatorTests
+namespace APIaggregatorTests.ServicesTests
 {
     public class WeatherServiceTests
     {
@@ -63,6 +59,26 @@ namespace APIaggregatorTests
             result.Info.City.Should().Be("London");
             result.Info.Temperature.Should().Be(15.0);
             result.Info.Description.Should().Be("clear sky");
+        }
+
+        [Fact]
+        public async Task GetWeatherForCityAsync_ReturnsError_WhenCityNotFound()
+        {
+            // Arrange
+            var city = "InvalidCity";
+            var unit = TemperatureUnit.Metric;
+
+            // Mock Geolocation API returns empty array
+            _mockHttp.When("http://api.openweathermap.org/geo/1.0/direct*")
+                .Respond("application/json", "[]");
+
+            // Act
+            var result = await _service.GetWeatherForCityAsync(city, unit);
+
+            // Assert
+            result.Status.Should().Be(ApiStatus.Error);
+            result.Info.Should().BeNull();
+            result.ErrorMessage.Should().Contain("No location found");
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using APIaggregator.Models.AboutWeather;
-
-namespace APIaggregator.Models.Weather
+﻿namespace APIaggregator.Models.Weather
 {
     public class WeatherResult: BaseResult
     {

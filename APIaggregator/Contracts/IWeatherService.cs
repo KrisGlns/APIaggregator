@@ -1,5 +1,4 @@
-﻿using APIaggregator.Models.AboutWeather;
-using APIaggregator.Models.Weather;
+﻿using APIaggregator.Models.Weather;
 
 namespace APIaggregator.Contracts
 {

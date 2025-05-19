@@ -1,4 +1,7 @@
-﻿public class WeatherDescription
+﻿namespace APIaggregator.Models.Weather
 {
-    public string Description { get; set; }
+    public class WeatherDescription
+    {
+        public string Description { get; set; }
+    }
 }

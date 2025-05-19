@@ -2,6 +2,7 @@
 using APIaggregator.Services;
 using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using RichardSzalay.MockHttp;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace APIaggregatorTests
+namespace APIaggregatorTests.ServicesTests
 {
     public class GithubServiceTests
     {
@@ -21,7 +22,13 @@ namespace APIaggregatorTests
         {
             _mockHttp = new MockHttpMessageHandler();
             var client = new HttpClient(_mockHttp);
-            _service = new GithubService(client, new MemoryCache(new MemoryCacheOptions()));
+            var config = new ConfigurationBuilder()
+                .AddInMemoryCollection(new Dictionary<string, string>
+                {
+                { "ApiKeys:GitHub", "test-api-key" }
+                })
+                .Build();
+            _service = new GithubService(client, new MemoryCache(new MemoryCacheOptions()), config);
         }
 
         [Fact]

@@ -1,4 +1,7 @@
-﻿public class MainInfo
+﻿namespace APIaggregator.Models.Weather
 {
-    public double Temp { get; set; }
+    public class MainInfo
+    {
+        public double Temp { get; set; }
+    }
 }

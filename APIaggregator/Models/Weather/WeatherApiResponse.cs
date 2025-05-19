@@ -1,4 +1,4 @@
-﻿namespace APIaggregator.Models.AboutWeather
+﻿namespace APIaggregator.Models.Weather
 {
     public class WeatherApiResponse
     {

@@ -1,0 +1,197 @@
+{
+  "info": {
+    "name": "API Aggregator",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Aggregated Endpoint",
+      "event": [],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "http://localhost:5185/api/aggregate?city=Athens&topic=dotnet&githubUsername=KrisGlns&sortNews=date&newsLimit=2",
+          "protocol": "http",
+          "host": [
+            "localhost:5185"
+          ],
+          "path": [
+            "api",
+            "aggregate"
+          ],
+          "query": [
+            {
+              "key": "city",
+              "value": "Athens"
+            },
+            {
+              "key": "topic",
+              "value": "dotnet"
+            },
+            {
+              "key": "githubUsername",
+              "value": "KrisGlns"
+            },
+            {
+              "key": "sortNews",
+              "value": "date"
+            },
+            {
+              "key": "newsLimit",
+              "value": "2"
+            }
+          ],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "Clear cache",
+      "event": [],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "http://localhost:5000/api/cache/clear",
+          "protocol": "http",
+          "host": [
+            "localhost:5000"
+          ],
+          "path": [
+            "api",
+            "cache",
+            "clear"
+          ],
+          "query": [],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "Get Weather By City and Unit",
+      "event": [],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "http://localhost:5185/api/aggregate/weather?city=Athens&unit=metric",
+          "protocol": "http",
+          "host": [
+            "localhost:5185"
+          ],
+          "path": [
+            "api",
+            "aggregate",
+            "weather"
+          ],
+          "query": [
+            {
+              "key": "city",
+              "value": "Athens"
+            },
+            {
+              "key": "unit",
+              "value": "metric"
+            }
+          ],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "Get News by Topic, with Sorting and Limit",
+      "event": [],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "http://localhost:5185/api/aggregate/news?topic=dotnet&sort=date&limit=3",
+          "protocol": "http",
+          "host": [
+            "localhost:5185"
+          ],
+          "path": [
+            "api",
+            "aggregate",
+            "news"
+          ],
+          "query": [
+            {
+              "key": "topic",
+              "value": "dotnet"
+            },
+            {
+              "key": "sort",
+              "value": "date"
+            },
+            {
+              "key": "limit",
+              "value": "3"
+            }
+          ],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "Get GitHub Repositories for a User",
+      "event": [],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "http://localhost:5185/api/aggregate/github?username=KrisGlns",
+          "protocol": "http",
+          "host": [
+            "localhost:5185"
+          ],
+          "path": [
+            "api",
+            "aggregate",
+            "github"
+          ],
+          "query": [
+            {
+              "key": "username",
+              "value": "KrisGlns"
+            }
+          ],
+          "variable": []
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "baseurl",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 ﻿using APIaggregator.Contracts;
+using APIaggregator.Models;
 using APIaggregator.Models.AboutNews;
 using APIaggregator.Models.News;
 using Microsoft.Extensions.Caching.Memory;
@@ -30,20 +31,29 @@ namespace APIaggregator.Services
                 return cached;
             }
 
-            var result = await FetchNewsFromApiAsync(topic, limit);
+            try
+            {
+                var result = await FetchNewsFromApiAsync(topic, limit);
 
-            _cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+                _cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
 
-            return result;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new NewsResult
+                {
+                    Status = ApiStatus.Error,
+                    Articles = new List<NewsArticle>(),
+                    ErrorMessage = $"Failed to fetch news: {ex.Message}"
+                };
+            }
         }
 
         private async Task<NewsResult> FetchNewsFromApiAsync(string topic, int? limit)
         {
             var apiKey = _config["ApiKeys:NewsApi"];
 
-            // apiKey: The API key i was granted after registering for a developer account.
-            // q: Keywords or phrases to search for in the article title and body.
-            //    The complete value for q must be URL-encoded. Max length: 500 chars.
             var url = $"https://newsapi.org/v2/everything?q={Uri.EscapeDataString(topic)}&apiKey={apiKey}";
 
             string? warningMessage = null;
@@ -52,7 +62,12 @@ namespace APIaggregator.Services
             if (!httpResponse.IsSuccessStatusCode)
             {
                 var error = await httpResponse.Content.ReadAsStringAsync();
-                throw new HttpRequestException($"News API call failed: {httpResponse.StatusCode}, Body: {error}");
+                return new NewsResult
+                {
+                    Status = ApiStatus.Error,
+                    ErrorMessage = $"News API call failed: {httpResponse.StatusCode}, Body: {error}",
+                    Articles = new List<NewsArticle>()
+                };
             }
             var newsResponse = await httpResponse.Content.ReadFromJsonAsync<NewsResponse>();
             var articles = newsResponse?.Articles ?? new List<NewsArticle>();
