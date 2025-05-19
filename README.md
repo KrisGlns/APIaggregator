@@ -128,6 +128,7 @@ Optional sorting and filtering:
 
 -- Testing --
 This project uses xUnit as the test framework and FluentAssertions for expressive assertions. The service and controller layers are thorougly unit tested using NSubstitute and MockHttp, ensuring reliable functionality without real external dependencies.
+Also, Bogus library is used to generate randomized, realistic test data for our models, avoiding hardcoded values.
 Tools and Libraries
  * xUnit -> Test framework
  * FluentAssertions -> Fluent syntax for assertions
