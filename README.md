@@ -125,7 +125,7 @@ Response Wrapping:
 
 Optional sorting and filtering:
  * Before returning news results, the logic optionally limits article count via the newsLimit parameter and/or sorts articles by date or author. This happens after data is fetched.
-
+ * 
 -- Testing --
 This project uses xUnit as the test framework and FluentAssertions for expressive assertions. The service and controller layers are thorougly unit tested using NSubstitute and MockHttp, ensuring reliable functionality without real external dependencies.
 Also, Bogus library is used to generate randomized, realistic test data for our models, avoiding hardcoded values.
@@ -135,4 +135,12 @@ Tools and Libraries
  * NSubstitute -> Mocking service dependencies
  * RichardSzalay.MockHttp -> Mocking HTTP requests for services
 
+-- Sceduled Jobs -- 
+This project uses the Quartz nuget package to schedule a recurring background job that automatically clears the in-memory cache once every 24 hours.
+
+-- Logging with Serilog --
+This project uses the Serilog Library for structured and configurable logging.
+Logging outputs
+ * Console (during development)
+ * Daily rolling log files in the '/Logs/' directory
 
