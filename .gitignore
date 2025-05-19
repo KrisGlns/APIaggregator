@@ -483,6 +483,9 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
+# .bundle files
+*.bundle
+
 # Ignore user secrets (dotnet user-secrets)
 **/secrets.json
 
